@@ -2,3 +2,5 @@ version: '3.9'
 services:
   distream:
     build: .
+    ports:
+      - 8888:8888

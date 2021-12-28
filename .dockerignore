@@ -1,0 +1,10 @@
+bin/
+Makefile
+
+.gitignore
+.gitmodules
+
+docker-compose.yml
+Dockerfile
+
+README.md

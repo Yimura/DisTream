@@ -1,8 +1,49 @@
 #include "common.hpp"
+#include "manager/connection_manager.hpp"
+
+using namespace distream;
+
+void signal_handler(int signal)
+{
+    std::cout << "\r";
+    g_log->info("SIGNAL", "Received termination signal, shutting down...");
+
+    g_running = false;
+}
 
 int main()
 {
-    std::cout << "Test" << std::endl;
+    signal(SIGTERM, signal_handler);
+    signal(SIGINT, signal_handler);
+
+    auto logger_instance = std::make_unique<Logger>(Logger::LogLevel::Verbose);
+
+    g_log->info("MAIN", "Starting DisTream...");
+
+    auto thread_pool_instance = std::make_unique<ThreadPool>(512);
+    g_log->verbose("MAIN", "Initialized thread_pool");
+
+    auto conn_mgr_instance = std::make_unique<ConnectionManager>();
+    g_log->verbose("MAIN", "Initialized connection manager");
+    g_thread_pool->push([]
+    {
+        g_conn_mgr->start();
+    });
+
+    while (g_running)
+        std::this_thread::sleep_for(100ms);
+
+    conn_mgr_instance.reset();
+    g_log->verbose("MAIN", "Connection manager uninitialized");
+
+    thread_pool_instance->destroy();
+    g_log->verbose("MAIN", "Destroyed thread pool");
+
+    thread_pool_instance.reset();
+    g_log->verbose("MAIN", "Thread pool uninitialized");
+
+    g_log->info("MAIN", "Farewell!!!");
+    logger_instance.reset();
 
     return 0;
 }

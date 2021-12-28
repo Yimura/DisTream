@@ -1,0 +1,17 @@
+{
+    "configurations": [
+        {
+            "name": "Linux Env",
+            "includePath": [
+                "src/",
+                "vendor/json/single_include",
+                "/usr/include"
+            ],
+            "intelliSenseMode": "linux-gcc-x64",
+            "compilerPath": "/usr/bin/clang",
+            "cStandard": "c17",
+            "cppStandard": "c++17"
+        }
+    ],
+    "version": 4
+}

@@ -44,8 +44,6 @@ workspace "DisTream"
 
         links { "crypto", "pthread", "ssl" }
 
-        forceincludes { "%{PrecompiledHeaderInclude}" }
-
         flags { "NoImportLib", "Maps" }
 
         filter "configurations:Debug"

@@ -1,17 +1,9 @@
+#pragma once
 #include "common.hpp"
-#include "connection.hpp"
-#include "websocketpp/config/asio_no_tls.hpp"
-#include "websocketpp/server.hpp"
 
 namespace distream
 {
-    typedef websocketpp::server<websocketpp::config::asio> server;
-
-    using websocketpp::connection_hdl;
-    using websocketpp::lib::placeholders::_1;
-    using websocketpp::lib::placeholders::_2;
-    using websocketpp::lib::bind;
-
+    class Connection; // Forward Declare Connection
     class ConnectionManager : public server
     {
     private:

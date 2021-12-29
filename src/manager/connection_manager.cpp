@@ -1,3 +1,4 @@
+#include "connection.hpp"
 #include "connection_manager.hpp"
 
 namespace distream

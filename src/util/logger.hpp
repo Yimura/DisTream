@@ -130,7 +130,7 @@ namespace distream
                 break;
             }
 
-            size_t size_needed = snprintf(nullptr, 0, format, std::forward<Args>(args)...);
+            size_t size_needed = snprintf(nullptr, 0, format, std::forward<Args>(args)...) + 1;
             char* message = (char*)malloc(sizeof(char) * size_needed);
             sprintf(message, format, std::forward<Args>(args)...);
 

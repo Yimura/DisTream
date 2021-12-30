@@ -22,6 +22,7 @@ namespace distream
         void on_open(connection_hdl hdl);
         void on_close(connection_hdl hdl);
         void on_message(connection_hdl hdl, server::message_ptr msg);
+        bool on_validation(connection_hdl hdl);
 
         // methods
         void start();

@@ -15,6 +15,7 @@ namespace distream
         this->init_asio();
         this->set_reuse_addr(true);
 
+        this->set_validate_handler(bind(&ConnectionManager::on_validation, this, _1));
         this->set_open_handler(bind(&ConnectionManager::on_open, this, _1));
         this->set_close_handler(bind(&ConnectionManager::on_close, this, _1));
         this->set_message_handler(bind(&ConnectionManager::on_message, this, _1, _2));
@@ -41,6 +42,8 @@ namespace distream
 
     void ConnectionManager::on_open(connection_hdl hdl)
     {
+        g_log->verbose("CONN_MGR", "New client connection");
+
         auto conn = std::make_shared<Connection>(hdl);
 
         this->m_conn_list.insert({ hdl, std::move(conn) });
@@ -49,11 +52,18 @@ namespace distream
     void ConnectionManager::on_close(connection_hdl hdl)
     {
         this->m_conn_list.erase(hdl);
+
+        g_log->verbose("CONN_MGR", "Client connection closed");
     }
 
     void ConnectionManager::on_message(connection_hdl hdl, server::message_ptr msg)
     {
         m_event_handler->push_event(hdl, msg);
+    }
+
+    bool ConnectionManager::on_validation(connection_hdl hdl)
+    {
+        return this->get_con_from_hdl(hdl)->get_request_header("Authorization") == g_settings->server.password;
     }
 
     void ConnectionManager::start()

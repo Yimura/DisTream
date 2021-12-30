@@ -66,6 +66,14 @@ namespace distream
     void ConnectionManager::destroy()
     {
         this->stop_listening();
+
+        for (auto conn_pair : m_conn_list)
+        {
+            auto conn = this->get_con_from_hdl(conn_pair.first);
+
+            conn->close(1001, "");
+        }
+
         this->stop();
     }
 }

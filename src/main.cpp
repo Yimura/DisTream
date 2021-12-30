@@ -20,11 +20,14 @@ int main()
 
     g_log->info("MAIN", "Starting DisTream...");
 
+    auto settings_instance = std::make_unique<Settings>();
+    g_log->verbose("MAIN", "Initialized Settings");
+
     auto thread_pool_instance = std::make_unique<ThreadPool>(512);
-    g_log->verbose("MAIN", "Initialized thread_pool");
+    g_log->verbose("MAIN", "Initialized ThreadPool");
 
     auto conn_mgr_instance = std::make_unique<ConnectionManager>();
-    g_log->verbose("MAIN", "Initialized connection manager");
+    g_log->verbose("MAIN", "Initialized ConnectionManager");
     g_thread_pool->push([]
     {
         g_conn_mgr->start();
@@ -41,6 +44,9 @@ int main()
 
     thread_pool_instance.reset();
     g_log->verbose("MAIN", "Thread pool uninitialized");
+
+    settings_instance.reset();
+    g_log->verbose("MAIN", "Settings uninitialized");
 
     g_log->info("MAIN", "Farewell!!!");
     logger_instance.reset();
